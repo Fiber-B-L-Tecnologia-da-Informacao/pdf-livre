@@ -7,4 +7,5 @@ await mkdir(`${root}dist`, { recursive: true });
 for (const name of ['index.html', 'src', 'assets', 'vendor', 'LICENSE', 'THIRD_PARTY_NOTICES.md']) {
   await cp(`${root}${name}`, `${root}dist/${name}`, { recursive: true });
 }
-console.log('Aplicação estática completa em dist/.');
+await import('./build-offline.mjs');
+console.log('Distribuições estática e HTML único completas em dist/.');

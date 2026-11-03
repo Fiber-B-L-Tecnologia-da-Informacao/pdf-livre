@@ -17,3 +17,11 @@ Um `AbortController` interrompe o carregamento por `loadingTask.destroy()`. A co
 Itens textuais vêm de `getTextContent()`. O agrupamento usa coordenadas e lacunas entre itens; não é reconstrução semântica de layouts. A sequência valida o número e os cabeçalhos dos blocos, inclusive marcadores de páginas com erro. A limpeza é opcional, heurística e registrada. A inspeção textual ocorre antes dela, preserva o conteúdo e não substitui comparação visual ou inspeção completa de fontes/camadas.
 
 O arquivo e todos os blocos ficam em memória; ZIP também consome memória. Processar páginas sequencialmente não implica streaming completo nem suporte ilimitado a arquivos grandes.
+
+## HTML único offline
+
+`npm run build:offline` empacota o mesmo `src/app.js` com esbuild. O módulo `src/embedded-assets.js`, vazio em desenvolvimento, é substituído durante a geração por recursos em base64 e pelo código do worker. `src/pdf-runtime.js` usa um worker em URL `blob:` e `src/embedded-data.js` devolve fontes e CMaps em memória por `BinaryDataFactory`, com `useWorkerFetch: false`. Não há cópia independente da lógica de extração.
+
+O HTML contém dois scripts inline com hashes SHA-256 na política de conteúdo e permite scripts de worker em `blob:`. `connect-src 'none'` bloqueia conexões da aplicação. Recursos de licença acompanham o HTML em uma seção recolhida. O empacotamento não transforma o aplicativo em renderizador de PDF: imagens, perfis de cor e OCR continuam fora do objetivo de extrair texto.
+
+O workflow de release executa os testes e a geração no GitHub Actions, cria a tag correspondente à versão e publica o HTML e o checksum como anexos. Ele não configura GitHub Pages e recusa sobrescrever uma release já existente.

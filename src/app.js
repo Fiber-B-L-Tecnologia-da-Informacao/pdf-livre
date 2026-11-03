@@ -1,7 +1,6 @@
-import * as pdfjs from '../vendor/pdf.mjs';
+import * as pdfjs from './pdf-runtime.js';
 import { convertFile } from './conversion.js';
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL('../vendor/pdf.worker.mjs', import.meta.url).href;
 const el = id => document.getElementById(id);
 const zone = el('zona'), input = el('entrada'), button = el('botaoConverter');
 let selected = null, running = false, controller = null, result = null;

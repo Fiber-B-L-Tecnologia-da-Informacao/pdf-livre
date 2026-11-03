@@ -9,7 +9,7 @@ Converta PDFs em texto organizado por página, direto no navegador.<br>
 
 Uma iniciativa da **Fiber Banda Larga Tecnologia da Informação**.
 
-[Começar](#começar) · [Recursos](#recursos) · [Privacidade](#privacidade) · [Contribuir](#contribuir)
+[Baixar HTML offline](https://github.com/Fiber-B-L-Tecnologia-da-Informacao/pdf-livre/releases/latest/download/pdf-livre.html) · [Começar](#começar) · [Recursos](#recursos) · [Privacidade](#privacidade) · [Contribuir](#contribuir)
 
 </div>
 
@@ -37,7 +37,17 @@ Ele nasceu de uma ferramenta para documentos e processos extensos. A Fiber abriu
 
 ## Começar
 
-### Rodar no seu computador
+### Usar sem instalar nada
+
+1. [Baixe o arquivo **pdf-livre.html**](https://github.com/Fiber-B-L-Tecnologia-da-Informacao/pdf-livre/releases/latest/download/pdf-livre.html) na versão mais recente.
+2. Salve no seu computador e abra o arquivo no navegador atualizado, por duplo clique ou **Abrir com**.
+3. Escolha o PDF e converta. Depois do download do HTML, não é preciso internet, Node.js ou servidor local.
+
+O HTML inclui interface, código, PDF.js, worker, JSZip e recursos auxiliares. Você pode guardá-lo em uma pasta ou pendrive e utilizá-lo sem acessar um site. As licenças estão incluídas no próprio arquivo. O download precisa terminar antes de abrir: a visualização de HTML do GitHub não é a ferramenta.
+
+Para conferir a integridade, cada lançamento inclui `SHA256SUMS.txt`.
+
+### Desenvolver ou melhorar o código
 
 Instale o [Node.js](https://nodejs.org/) **24.22.2 ou superior**, em uma versão LTS suportada. Depois:
 
@@ -48,7 +58,7 @@ npm ci
 npm run dev
 ```
 
-Abra **http://127.0.0.1:4173** no navegador. A instalação baixa as dependências; a conversão não precisa de serviços externos. Não abra `index.html` por duplo clique: módulos e workers precisam de um servidor HTTP.
+Abra **http://127.0.0.1:4173** no navegador. A instalação baixa as dependências; a conversão não precisa de serviços externos. Esse servidor é para o código de desenvolvimento: o `index.html` do repositório usa módulos e arquivos separados. Para usar por duplo clique, baixe o `pdf-livre.html` da release.
 
 ### Converter
 
@@ -81,11 +91,15 @@ meu-documento_parte_002_pag_00301_a_00600.md
 _relatorio_de_conferencia.txt
 ```
 
+## Teste com um documento grande
+
+O mantenedor relata uma conversão bem-sucedida de um **PDF gerado com 50.000 páginas e mais de 600 MB**, com extração para Markdown. Esse é um teste de uso relatado, não um limite garantido nem um benchmark reproduzido nesta versão. O tempo e o tamanho suportado dependem do documento, do navegador e da memória disponível.
+
 ## Privacidade
 
 O aplicativo não contém upload de documentos, analytics ou serviços de conversão remota. O PDF é lido em memória, e os downloads são criados no navegador. Não há persistência de documentos pela aplicação.
 
-O servidor de hospedagem recebe as solicitações normais para carregar a página e seus arquivos estáticos. Isso é diferente de receber o conteúdo do PDF. Extensões do navegador, o dispositivo, o provedor de hospedagem e modificações de terceiros estão fora do controle deste projeto.
+Na distribuição em HTML único, a política de conteúdo bloqueia conexões da aplicação (`connect-src none`). Não há GitHub Pages ou serviço de conversão exigido: o GitHub distribui o arquivo para download. Extensões do navegador, o próprio dispositivo e modificações de terceiros estão fora do controle deste projeto.
 
 O relatório pode conter trechos do documento, incluindo texto removido. Trate o Markdown, o ZIP e o relatório com a mesma confidencialidade do PDF original.
 
@@ -103,14 +117,16 @@ O texto do PDF deve ser tratado como conteúdo não confiável, especialmente qu
 
 ## Desenvolvimento
 
-JavaScript com módulos nativos, CSS e HTML. Sem framework ou etapa de compilação do código próprio.
+JavaScript com módulos nativos, CSS e HTML, sem framework. O código-fonte continua separado e completo; esbuild empacota esse mesmo código no HTML único, sem uma segunda implementação mantida à mão.
 
 | Comando | Finalidade |
 | --- | --- |
 | `npm ci` | Instala versões fixadas e prepara as bibliotecas locais |
 | `npm run dev` | Inicia o servidor local na porta 4173 |
 | `npm test` | Executa testes de extração e conversão |
-| `npm run build` | Gera a aplicação estática completa em `dist/` |
+| `npm run build` | Gera a pasta estática e o HTML único em `dist/` |
+| `npm run build:offline` | Gera `dist/pdf-livre.html` e seu SHA-256 |
+| `npm run preview:offline` | Abre um servidor de teste para o HTML único |
 | `npm run check` | Verifica sintaxe, testes e geração da distribuição |
 | `node scripts/serve.mjs --dist` | Testa a distribuição gerada |
 
@@ -123,11 +139,18 @@ docs/         Arquitetura e registro da recuperação do código
 .github/      Verificação automatizada
 ```
 
-### Hospedar
+### Gerar a versão para distribuição
 
-Execute `npm ci` e `npm run build`. Publique **o conteúdo de `dist/`** em uma hospedagem estática com HTTPS, preservando caminhos e tipos MIME de JavaScript e WebAssembly. O aplicativo funciona em subdiretórios. A distribuição é uma pasta completa; não é um HTML único.
+```bash
+npm ci
+npm run check
+```
 
-Não há backend, banco de dados, chave de API nem variável secreta exigida. O servidor local incluído é apenas para desenvolvimento.
+O arquivo `dist/pdf-livre.html` é o download pronto para uso. `dist/SHA256SUMS.txt` contém seu SHA-256. A pasta `dist/` também inclui a distribuição com arquivos separados para testes de desenvolvimento; não é necessário hospedar o aplicativo para utilizar o HTML único.
+
+O empacotamento inclui as dependências, os recursos auxiliares e os avisos de licença. A instalação e a geração exigem internet para obter dependências; o uso do HTML gerado não. Navegadores modernos são necessários para os recursos utilizados pelo PDF.js.
+
+O workflow de lançamento gera e verifica o arquivo no GitHub Actions quando a versão de `package.json` muda na branch `main`, e o publica como anexo em **Releases**. Consulte [a arquitetura](./docs/ARCHITECTURE.md) e [o registro de validação](./docs/OFFLINE.md).
 
 ## Contribuir
 

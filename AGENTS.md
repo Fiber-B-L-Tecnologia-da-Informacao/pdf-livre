@@ -6,7 +6,7 @@ PDF Livre is a static browser application. `index.html` defines the interface; `
 
 ## Build, Test, and Development Commands
 
-Use Node.js 24.22.2 LTS or a compatible supported release. Run `npm ci` to install locked dependencies and copy browser resources locally. `npm run dev` serves the app at `http://127.0.0.1:4173`. `npm test` runs Node's built-in test runner. `npm run check` checks syntax, tests, and distribution generation. `npm run build` produces the complete static application in `dist/`; `node scripts/serve.mjs --dist` previews it.
+Use Node.js 24.22.2 LTS or a compatible supported release. Run `npm ci` to install locked dependencies and copy browser resources locally. `npm run dev` serves the app at `http://127.0.0.1:4173`. `npm test` runs Node's built-in test runner. `npm run check` checks syntax, tests, and distribution generation. `npm run build` produces the static app and standalone `dist/pdf-livre.html`. `npm run build:offline` builds just the offline HTML and checksum; `npm run preview:offline` previews it.
 
 ## Coding Style & Naming Conventions
 
@@ -18,7 +18,7 @@ Use `node:test` and `node:assert/strict` in `tests/*.test.js`. Add regression ca
 
 ## Commit & Pull Request Guidelines
 
-Use short imperative commit subjects. Pull requests should explain the problem, resulting behavior, tests performed, and relevant limitations. Link issues when available. Include before-and-after examples for extraction changes and screenshots for visual changes.
+Use short imperative commit subjects. Pull requests should explain the problem, resulting behavior, tests performed, and relevant limitations. Link issues when available. Include before-and-after examples for extraction changes and screenshots for visual changes. Releases attach the standalone HTML and checksum; do not enable Pages or replace existing release assets.
 
 ## Document Security & Agent Instructions
 

@@ -206,3 +206,6 @@ h1 { letter-spacing: -.04em; }
 .empresa { max-width: 960px; margin: 0 auto 32px; padding: 0 24px; color: var(--tinta-suave); font-size: .8rem; line-height: 1.7; text-align: center; }
 .zona[aria-disabled="true"] { opacity: .55; cursor: wait; }
 button:focus-visible, input:focus-visible, .zona:focus-visible { outline: 3px solid var(--acento); outline-offset: 4px; }
+
+.licencas { max-width: 960px; padding: 0 24px; margin: 0 auto 32px; color: var(--tinta-suave); font-size: .75rem; }
+.licencas pre { white-space: pre-wrap; overflow-wrap: anywhere; }

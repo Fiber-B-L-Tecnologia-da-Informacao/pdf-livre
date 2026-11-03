@@ -1,0 +1,35 @@
+name: Publicar HTML offline
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [package.json]
+permissions:
+  contents: write
+concurrency:
+  group: release-offline
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - name: Publicar arquivo e checksum
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="v$(node -p 'require("./package.json").version')"
+          notes="docs/releases/${tag}.md"
+          test -f "$notes"
+          if gh release view "$tag" > /dev/null 2>&1; then
+            echo "A versão $tag já existe; preserve os anexos publicados e aumente a versão para um novo lançamento."
+            exit 1
+          fi
+          gh release create "$tag" dist/pdf-livre.html dist/SHA256SUMS.txt \
+            --target "$GITHUB_SHA" --title "PDF Livre ${tag} — HTML offline" --notes-file "$notes"
