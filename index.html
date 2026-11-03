@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PDF Livre · PDF para Markdown | Fiber</title>
+<meta name="description" content="Converta PDF para Markdown no navegador. Processamento local, arquivos em partes e relatório de conferência. Código aberto pela Fiber Banda Larga Tecnologia da Informação.">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; worker-src 'self' blob:; connect-src 'self' blob:; img-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+
+
+<div class="pagina">
+  <header>
+    <p class="assinatura">CÓDIGO ABERTO · FIBER</p>
+    <h1>PDF Livre</h1>
+    <p class="subtitulo">Seu PDF em Markdown, página por página. Sem cadastro, sem envio do documento e com conferência da sequência.</p>
+    <span class="privacidade">Seu documento é processado neste navegador. Nenhum arquivo é enviado para conversão.</span>
+  </header>
+
+  <section class="etapa" aria-labelledby="r1">
+    <div class="rotulo" id="r1">1. Arquivo</div>
+    <div class="zona" id="zona" tabindex="0" role="button" aria-label="Escolher o arquivo PDF">
+      <strong>Arraste o PDF aqui ou clique para escolher</strong>
+      <span>PDFs com texto selecionável · sem OCR integrado</span>
+    </div>
+    <input type="file" id="entrada" accept="application/pdf,.pdf" hidden>
+    <div class="arquivo-info" id="arquivoInfo" hidden></div>
+  </section>
+
+  <section class="etapa" aria-labelledby="r2">
+    <div class="rotulo" id="r2">2. Formato de entrega</div>
+    <div class="opcoes">
+      <label class="opcao">
+        <input type="radio" name="formato" id="formatoUnico" value="unico" checked>
+        <span class="titulo">Arquivo único (.md)</span>
+        <span class="detalhe">Todo o documento num só arquivo. Ideal para guardar, pesquisar e editar. O tamanho suportado depende do seu editor e da memória disponível.</span>
+      </label>
+      <label class="opcao">
+        <input type="radio" name="formato" id="formatoPartes" value="partes">
+        <span class="titulo">Dividido em partes (.zip)</span>
+        <span class="detalhe">Vários arquivos .md em sequência, dentro de um .zip. Indicado para abrir no Obsidian ou trazer trechos para análise.</span>
+        <span class="partes-config">
+          <span>Páginas por parte:</span>
+          <input type="number" id="paginasPorParte" aria-label="Páginas por parte" min="10" max="5000" step="10" value="300">
+        </span>
+      </label>
+    </div>
+    <label class="limpeza"><input type="checkbox" id="limparCarimbos"> Remover possíveis carimbos de assinatura (opcional)</label>
+    <p class="ajuda">O texto é preservado por padrão. A limpeza usa heurísticas e pode remover conteúdo legítimo; cada remoção aparece no relatório.</p>
+    <div class="acoes">
+      <button class="botao-principal" id="botaoConverter" disabled>Converter</button>
+    </div>
+  </section>
+
+  <section class="etapa" id="etapaProgresso" aria-labelledby="r3" hidden>
+    <div class="rotulo" id="r3">3. Conversão</div>
+    <div class="barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="barraProgresso"><div id="barraPreenchida"></div></div>
+    <div class="progresso-dados">
+      <span id="textoPaginas" aria-live="polite">Preparando</span>
+      <span id="textoTempo"></span>
+    </div>
+    <div class="acoes">
+      <button class="botao-secundario" id="botaoCancelar">Cancelar</button>
+    </div>
+  </section>
+
+  <section class="etapa" id="etapaResultado" aria-labelledby="r4" hidden>
+    <div class="rotulo" id="r4">4. Resultado</div>
+    <div class="resumo" id="resumo" aria-live="polite"></div>
+    <div id="avisos" style="display:grid;gap:8px"></div>
+    <div class="acoes">
+      <button class="botao-principal" id="botaoBaixar">Baixar Markdown</button>
+      <button class="botao-secundario" id="botaoRelatorio">Baixar relatório de conferência</button>
+    </div>
+    <div id="mensagemDownload"></div>
+  </section>
+
+  <section class="etapa" aria-labelledby="r5">
+    <div class="rotulo" id="r5">Exemplo do resultado</div>
+    <pre class="exemplo"><span class="marca">## Página 1</span>
+
+Excelentíssimo Senhor Doutor Juiz de Direito da Vara Cível
+da Comarca de São Paulo.
+
+<span class="marca">## Página 2</span>
+
+Requer a citação da ré para, querendo, apresentar contestação
+no prazo legal.
+
+<span class="marca">## Página 3</span>
+
+*[Página sem texto extraível: pode estar vazia ou exigir OCR.]*</pre>
+    <details>
+      <summary>O que é feito com o texto</summary>
+      <p>Cada página gera um bloco “## Página N”, na ordem do PDF. A conferência valida a sequência desses blocos, não a fidelidade do texto. Páginas sem texto e erros são listados no relatório. O aplicativo não executa instruções presentes no documento, não faz OCR e não recria tabelas, imagens ou a diagramação original.</p>
+    </details>
+  </section>
+
+  <p class="rodape">O tamanho suportado depende da memória do dispositivo. Mantenha esta aba aberta até terminar. Revise o resultado antes de utilizá-lo.</p>
+</div>
+
+<footer class="empresa">Uma iniciativa de <strong>Fiber Banda Larga Tecnologia da Informação</strong>.<br>Código aberto para tornar documentos mais acessíveis e reutilizáveis.</footer>
+<script defer src="./vendor/jszip.min.js"></script>
+<script type="module" src="./src/app.js"></script>
+</body>
+</html>

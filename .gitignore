@@ -1,0 +1,17 @@
+node_modules/
+vendor/
+dist/
+.analysis/
+.DS_Store
+.env
+.env.*
+!.env.example
+*.log
+coverage/
+test-results/
+playwright-report/
+# Original artifact stays local; recovered source is in src/.
+Fiber-tecnologia-da-informacao-Markdown.html
+# Never commit user documents or generated conversions.
+*.pdf
+output/
