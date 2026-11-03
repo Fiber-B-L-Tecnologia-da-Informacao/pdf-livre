@@ -26,7 +26,7 @@ npm run build:offline
 - Eventos observados após desligar a rede continham somente URLs `blob:` locais, sem solicitações HTTP/HTTPS durante as conversões observadas.
 - Nenhum aviso ou erro de console no teste inicial de conversão.
 
-A abertura automatizada direta por `file://` foi bloqueada pela política do navegador controlado. Não foi contornado esse bloqueio. O teste acima demonstra o conteúdo embutido funcionando sem rede após o carregamento por HTTP; não comprova por si só a abertura por duplo clique em todos os navegadores. A conferência por abertura direta no computador do mantenedor deve ser registrada separadamente.
+A abertura automatizada direta por `file://` foi bloqueada pela política do navegador controlado. Não foi contornado esse bloqueio. O teste acima demonstra o conteúdo embutido funcionando sem rede após o carregamento por HTTP; não comprova por si só a abertura por duplo clique em todos os navegadores. Em seguida, o mantenedor abriu `dist/pdf-livre.html` diretamente no computador e confirmou: **“Abriu e converteu sem internet”**. Essa é a validação manual relatada pelo mantenedor em 03/11/2026, separada do teste automatizado por HTTP. Navegador, dispositivo, PDF e duração desse teste não foram informados.
 
 ## Relato de documento grande
 
